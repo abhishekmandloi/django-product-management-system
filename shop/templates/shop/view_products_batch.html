@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-
+{% load calculate_tax %}
 {% block title %}Dashboard{% endblock title %}
 
 {% block content %}
@@ -8,7 +8,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="box-title">Products </h4>
+                    <h4 class="box-title">Batch <button type="button" class="btn" style="color:white; "><a href="{% url 'shop:add_product_batch' %}"> Add New +</a> </button> </h4>
                 </div>
                 <div class="card-body--">
                     <div class="table-stats order-table ov-h">
@@ -37,7 +37,7 @@
                                         {% if product.expirydate <= today %}
                                         <a class="btn btn-danger" href="#">Expired</a>
                                         {% elif product.expirydate <= today30 %}
-                                        <a class="btn btn-primary" style="background-color: yellow; color:black;" href="#">Expiring Soon</a>
+                                        <a class="btn btn-primary" title="Products expiring within a month" style="background-color: yellow; color:black;" href="#">Expiring Soon in {% count_days product.expirydate today as daysleft %} {% if daysleft == 1 %} 1 day {% else %} {{daysleft}} days {% endif %} </a>
                                         {% endif %}
                                         <a class="btn btn-primary" href="{% url 'shop:edit_product_batch' product.pk %}" >Edit</a>
                                         <a class="btn btn-danger" href="{% url 'shop:delete_product_batch' product.pk %}" onclick="return confirm('Are you sure you want to delete this?')" >Delete</a>

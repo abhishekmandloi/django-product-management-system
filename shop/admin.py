@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Product
 from .models import ProductDetail
-from .models import Ingredient
+from .models import Ingredient,HSNCode
 from .models import ProductBatch, ProductDetailBatch
 from .models import CustomerDetail
 from .models import Bill, BillItems, BillItemsTest,BillTest2, BillItemsTest2
@@ -17,6 +17,7 @@ admin.site.register(CustomerDetail)
 admin.site.register(BillItems)
 admin.site.register(BillItemsTest)
 admin.site.register(BillItemsTest2)
+admin.site.register(HSNCode)
 
 class BillItemsInline(admin.TabularInline):
     model = BillItemsTest2

@@ -7,12 +7,19 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.ingredient
 
+class HSNCode(models.Model):
+    hsn_code = models.CharField(max_length=50)
+    rate = models.FloatField(default=18.0)
+
+    def __str__(self):
+        return "{}_ ({} %)".format(self.hsn_code,self.rate)
 
 class Product(models.Model):
     company = models.CharField(max_length=100, default='None')
     product = models.CharField(max_length=100)
     # ingredients = models.CharField(max_length=300)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name='ingredients',default='None')
+    hsn_code = models.ForeignKey(HSNCode, on_delete=models.CASCADE, related_name='ingredients',default='None')
 
     def __str__(self):
         return self.product

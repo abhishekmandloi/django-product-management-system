@@ -8,7 +8,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="box-title">Products </h4>
+                    <h4 class="box-title">Packing <button type="button" class="btn" style="color:white; "><a href="{% url 'shop:add_product_packing' %}"> Add New +</a> </button> </h4>
                 </div>
                 <div class="card-body--">
                     <div class="table-stats order-table ov-h">
@@ -29,7 +29,7 @@
                                 {% for product in products_list %}
                                 <tr>
                                     <td class="serial">{{ forloop.counter }}</td>
-                                    <td>{{ product.batch_no.product }}</td>
+                                    <td><a class="btn btn-primary" href="{% url 'shop:product_detail_view' product.batch_no.product.id %}" >{{ product.batch_no.product }}</a></td>
                                     <td>{{ product.batch_no.batch_no }}</td>
                                     <td>{{ product.packing }}</td>
                                     <td>{{ product.quantity }}</td>

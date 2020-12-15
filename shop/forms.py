@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import (formset_factory, modelformset_factory)
 
-from .models import Bill, BillItems, CustomerDetail,ProductBatch, ProductDetailBatch, BillItemsTest, BillTest2, BillItemsTest2, Ingredient,Product
+from .models import Bill, BillItems, CustomerDetail,ProductBatch, ProductDetailBatch, BillItemsTest, BillTest2, BillItemsTest2, Ingredient,Product,HSNCode
 from datetime import datetime
 
 
@@ -207,12 +207,30 @@ class IngredientForm(forms.ModelForm):
             )
         }
 
+class HSNCodeForm(forms.ModelForm):
+    
+    class Meta:
+        model = HSNCode
+        fields = ('hsn_code','rate', )
+        widgets = {
+            'hsn_code': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter HSN Code here'
+                }
+            ),
+            'rate': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter Rate here (in %)'
+                }
+            )
+        }
+
 class ProductForm(forms.ModelForm):
     
     class Meta:
         model = Product
         ingredient = Ingredient.objects.all()
-        fields = ('company','product','ingredient', )
+        fields = ('company','product','ingredient','hsn_code', )
         widgets = {
             'company': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -227,6 +245,12 @@ class ProductForm(forms.ModelForm):
             'ingredient': forms.Select(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter Ingredient here'
+                },
+                choices = ingredient
+            ),
+            'hsn_code': forms.Select(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter HSN Code here'
                 },
                 choices = ingredient
             )

@@ -20,12 +20,13 @@
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-product-hunt"></i>Product</a>
                     <ul class="sub-menu children dropdown-menu">
-                        
+                        <li><i class="fa fa-id-card-o"></i><a href="{% url 'shop:add_product_hsn_code' %}">Add HSN Code</a></li>
                         <li><i class="fa fa-id-card-o"></i><a href="{% url 'shop:add_product_ingredient' %}">Add Ingredient</a></li>
                         <li><i class="fa fa-id-card-o"></i><a href="{% url 'shop:add_product' %}">Add Product</a></li>
                         <li><i class="fa fa-id-card-o"></i><a href="{% url 'shop:add_product_batch' %}">Add Batch</a></li>
                         <li><i class="fa fa-id-card-o"></i><a href="{% url 'shop:add_product_packing' %}">Add Packing</a></li>
                         
+                        <li><i class="fa fa-th" style="color:rgb(108, 114, 170)"></i><a href="{% url 'shop:product_hsn_code' %}">HSN Code</a></li>
                         <li><i class="fa fa-th" style="color:rgb(108, 114, 170)"></i><a href="{% url 'shop:product_ingredient' %}">Ingredients</a></li>
                         <li><i class="fa fa-th" style="color:rgb(108, 114, 170)"></i><a href="{% url 'shop:product' %}">Product</a></li>
                         <li><i class="fa fa-th" style="color:rgb(108, 114, 170)"></i><a href="{% url 'shop:product_batch' %}">Product Batch</a></li>

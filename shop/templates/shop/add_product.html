@@ -54,7 +54,19 @@
             {{form.ingredient}}
         </div>
     </div>
-    <button type="button" class="btn" style="color:white; background-color: green;"><a href="{% url 'shop:add_product_ingredient' %}"> Ingredient +</a> </button>
+    <button type="button" class="btn" style="color:white; "><a href="{% url 'shop:add_product_ingredient' %}"> Ingredient +</a> </button>
+</div>
+
+<div class="row spacer">
+    <div class="col-2">
+        <label>{{form.hsn_code.label}}</label>
+    </div>
+    <div class="col-4">
+        <div class="input-group">
+            {{form.hsn_code}}
+        </div>
+    </div>
+    <button type="button" class="btn" style="color:white; "><a href="{% url 'shop:add_product_hsn_code' %}"> HSN Code +</a> </button>
 </div>
 
 <div class="row spacer">

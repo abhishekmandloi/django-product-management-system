@@ -8,7 +8,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="box-title">Products </h4>
+                    <h4 class="box-title">Products <button type="button" class="btn" style="color:white; "><a href="{% url 'shop:add_product' %}"> Add New +</a> </button></h4>
                 </div>
                 <div class="card-body--">
                     <div class="table-stats order-table ov-h">
@@ -19,6 +19,7 @@
                                     <th>Company</th>
                                     <th>Product Name</th>
                                     <th>Ingredient</th>
+                                    <th>HSN Code</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -30,6 +31,7 @@
                                     <td>{{ product.company }}</td>
                                     <td>{{ product.product }}</td>
                                     <td>{{ product.ingredient }}</td>
+                                    <td>{{ product.hsn_code }}</td>
                                    
                                     <td>
                                         <a class="btn btn-primary" href="{% url 'shop:edit_product' product.pk %}" >Edit</a>

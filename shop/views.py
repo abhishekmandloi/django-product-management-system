@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.contrib import messages
-from .models import Product,ProductDetailBatch,CustomerDetail,Bill,BillItems,BillItemsTest, BillTest2, BillItemsTest2,Ingredient, ProductBatch
-from .forms import BillForm,BillItemsForm,BillItemsFormset,BillItemsFormsetTest, CustomerDetailForm,ProductDetailBatchForm, IngredientForm, ProductForm, ProductBatchForm
+from .models import Product,ProductDetailBatch,CustomerDetail,Bill,BillItems,BillItemsTest, BillTest2, BillItemsTest2,Ingredient, ProductBatch,HSNCode
+from .forms import BillForm,BillItemsForm,BillItemsFormset,BillItemsFormsetTest, CustomerDetailForm,ProductDetailBatchForm, IngredientForm, ProductForm, ProductBatchForm,HSNCodeForm
 
 
 def index(request):
@@ -94,10 +94,15 @@ def show(request,purchaseno):
     bills_list = BillTest2.objects.select_related().all().filter(purchaseno=purchaseno)
     bill_items = BillItemsTest2.objects.select_related().all().filter(purchaseno=purchaseno)
     totalamount = 0
+    totalamount_without_tax = 0
+    total_tax = 0
+    from .templatetags.calculate_tax import without_tax, tax
     for item in bill_items:
         totalamount += item.productTotalPrice
+        totalamount_without_tax += without_tax(item.productTotalPrice, item.productName.batch_no.product.hsn_code.rate)
+        total_tax += tax(item.productTotalPrice, item.productName.batch_no.product.hsn_code.rate)
 
-    context = {'bills_list': bills_list, 'bill_items': bill_items, 'totalamount': totalamount}
+    context = {'bills_list': bills_list, 'bill_items': bill_items, 'totalamount': totalamount, 'totalamount_without_tax': totalamount_without_tax, 'total_tax': total_tax}
     return render(request, 'shop/show.html', context)
 
 def edit_billtest(request, purchaseno,customer_id):
@@ -397,3 +402,46 @@ def edit_billtest_final(request, purchaseno,customer_id):
 
     return render(request, 'shop/edit_bill.html', {'form': form,
                                                    'formset': formset, 'customers': customers_list})
+
+def add_product_hsn_code(request):
+    if request.method == 'POST':
+        form = HSNCodeForm(request.POST)
+        if form.is_valid():
+            product = form.save()
+            return redirect('shop:add_product')
+        else:
+            print('form is not valid',form)
+    else:
+        form = HSNCodeForm(request.GET or None)
+    return render(request, 'shop/add_product_hsn_code.html', {'form': form, 'btn_add_edit': 'Create'})
+
+def product_hsn_code(request):
+    hsn_code_list = HSNCode.objects.all()
+    context = {'hsn_code_list': hsn_code_list}
+    return render(request, 'shop/view_product_hsn_code.html', context)
+
+def edit_hsn_code(request, pk):
+    hsn_code = HSNCode.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = HSNCodeForm(request.POST,instance = hsn_code)
+        if form.is_valid():
+            hsn_code = form.save()
+            return redirect('shop:product_hsn_code')
+        else:
+            print('form is not valid',form)
+    else:
+        form = HSNCodeForm(instance = hsn_code)
+    return render(request, 'shop/add_product_hsn_code.html', {'form': form, 'btn_add_edit': 'Update'})
+
+def delete_hsn_code(request, pk):
+    obj = HSNCode.objects.get(pk=pk)
+    obj.delete()
+    return redirect('shop:product_hsn_code')
+
+def product_detail_view(request,product_id):
+    product = ProductBatch.objects.select_related().all().filter(product_id=product_id)
+    batch_list = [batch.id for batch in product]
+    productName = Product.objects.all().filter(id=product_id).distinct()
+    products_list = ProductDetailBatch.objects.select_related().all().filter(batch_no__in=batch_list)
+    context = {'products_list': products_list,'productName': productName}
+    return render(request, 'shop/view_products_detail.html', context)
